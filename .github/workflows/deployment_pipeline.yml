@@ -8,19 +8,23 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+
       - uses: mstachniuk/ci-skip@v1
         with:
           fail-fast: true
           commit-filter: "#skip"
+
       - uses: actions/setup-node@v2
         with:
           node-version: "16"
+
       - uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_MONGODB_URI: ${{ secrets.MONGODB_URI }}
           envkey_PORT: ${{ secrets.PORT }}
           file_name: .env
           fail_on_empty: true
+
       - name: npm install backend
         run: npm install
       - name: npm install frontend
@@ -29,4 +33,7 @@ jobs:
       - name: lint
         run: npm run lint
       - name: test backend
+        run: npm run test
+      - name: test frontend
+        working-directory: ./frontend
         run: npm run test
