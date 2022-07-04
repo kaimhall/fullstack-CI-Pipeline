@@ -70,5 +70,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_OWNER: kaimhall
-          RELEASE_BRANCHES: master, main, development
+          RELEASE_BRANCHES: master, main
           DEFAULT_BUMP: patch
