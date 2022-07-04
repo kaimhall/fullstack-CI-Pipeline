@@ -70,3 +70,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+  discord_notify:
+    runs-on: ubuntu-20.04
+    needs: tag_release
+    steps:
+      - name: test success
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: ${{ success() }}
+        with:
+          severity: info
+          description: Test Succeeded!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          username: kaimhall
+      - name: test failure
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: ${{ failure() }}
+        with:
+          severity: error
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          username: kaimhall
