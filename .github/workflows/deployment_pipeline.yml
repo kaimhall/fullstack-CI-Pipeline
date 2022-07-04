@@ -28,7 +28,6 @@ jobs:
 
       - name: npm install backend
         run: npm install
- development
       - name: npm install frontend
         working-directory: ./frontend
         run: npm install
@@ -73,6 +72,5 @@ jobs:
           REPO_OWNER: kaimhall
           RELEASE_BRANCHES: master, development
           DEFAULT_BUMP: patch
-      - name: lint
-        run: npm run eslint
- master
+    
+
