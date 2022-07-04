@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+
+import { React, useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -45,6 +46,7 @@ const App = () => {
           notify(`Updated info of ${savedPerson.name}`)
         })
           .catch(error => {
+            console.log(error)
             notify(
               `the person '${existingPerson.name}' was had already been from the server`, 'alert'
             )

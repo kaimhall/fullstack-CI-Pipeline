@@ -1,3 +1,4 @@
+import React from 'react'
 const Persons = ({ persons, handleDelete }) => {
   return <>
     <h2>Numbers</h2>

@@ -17,12 +17,6 @@
     "server": "json-server -p3001 --watch db.json",
     "cypress:open": "cypress open"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
