@@ -4,7 +4,7 @@ on:
     branches:
       - development
 jobs:
-  lint_and_test:
+  build_and_deploy:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -39,9 +39,17 @@ jobs:
       - name: test frontend
         working-directory: ./frontend
         run: npm run test
+
       - name: tests e2e
         uses: cypress-io/github-action@v2
         with:
           command: npm run test:e2e
           start: npm run start
           wait-on: http://localhost:3001
+
+      - name: deploy
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "shielded-shore-74120" #Must be unique in Heroku
+          heroku_email: "kaimhall@gmail.com"
