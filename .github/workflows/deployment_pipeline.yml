@@ -53,6 +53,3 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "shielded-shore-74120" #Must be unique in Heroku
           heroku_email: "kaimhall@gmail.com"
-          healthcheck: "https://shielded-shore-74120.herokuapp.com/health"
-          checkstring: "ok"
-          rollbackonhealthcheckfailed: true
