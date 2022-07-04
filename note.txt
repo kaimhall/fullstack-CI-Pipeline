@@ -1,16 +1,4 @@
-tag_release:
-    needs: build_and_deploy
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: "0"
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.39.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO_OWNER: kaimhall
-          RELEASE_BRANCHES: master, main, development
-          DEFAULT_BUMP: patch
+schedule:
+    - cron: "5 * * * *"
 
-ad some txt
+    change change
