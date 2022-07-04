@@ -28,6 +28,7 @@ jobs:
 
       - name: npm install backend
         run: npm install
+
       - name: npm install frontend
         working-directory: ./frontend
         run: npm install
