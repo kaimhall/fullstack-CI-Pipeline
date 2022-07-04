@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+      - uses: mstachniuk/ci-skip@v1
+        with:
+          fail-fast: true
+          commit-filter: "#skip"
       - uses: actions/setup-node@v2
         with:
           node-version: "16"
