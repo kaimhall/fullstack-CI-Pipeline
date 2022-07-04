@@ -7,12 +7,19 @@ require('dotenv').config()
 const Person = require('./models/person')
 
 app.use(cors())
-app.use(express.static('build'))
 app.use(express.json())
 
 morgan.token('body', (req) => JSON.stringify(req.body))
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+app.get('/health', (req, res) => {
+  res.send('ok')
+})
+
+app.get('/version', (req, res) => {
+  res.send('1') // change this string to ensure a new version deployed
+})
 
 app.get('/info', (req, res) => {
   Person.count().then(person_count => {
@@ -91,6 +98,9 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('build'))
+  }
   console.log(`Server running on port ${PORT}`)
 })
 

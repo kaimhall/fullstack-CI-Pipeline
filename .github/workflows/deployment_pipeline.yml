@@ -3,15 +3,76 @@ on:
   push:
     branches:
       - development
+
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+
+      - uses: mstachniuk/ci-skip@v1
+        with:
+          fail-fast: true
+          commit-filter: "#skip"
+
       - uses: actions/setup-node@v2
         with:
           node-version: "16"
-      - name: npm install
+
+      - uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          envkey_PORT: ${{ secrets.PORT }}
+          file_name: .env
+          fail_on_empty: true
+
+      - name: npm install backend
+        run: npm install
+ development
+      - name: npm install frontend
+        working-directory: ./frontend
         run: npm install
       - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build:ui
+      - name: test backend
+        run: npm run test
+      - name: test frontend
+        working-directory: ./frontend
+        run: npm run test
+
+      - name: tests e2e
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:e2e
+          start: npm run start
+          wait-on: http://localhost:3001
+
+      - name: deploy
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "shielded-shore-74120" #Must be unique in Heroku
+          heroku_email: "kaimhall@gmail.com"
+          healthcheck: "https://shielded-shore-74120.herokuapp.com/health"
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true
+
+  tag_release:
+    needs: build_and_deploy
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.39.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: kaimhall
+          RELEASE_BRANCHES: master, development
+          DEFAULT_BUMP: patch
+      - name: lint
         run: npm run eslint
+ master
