@@ -1,7 +1,7 @@
 name: scheduled healthcheck
 on:
-  push:
-    branches: [development]
+  schedule:
+    - cron: "* 1 * * *"
 jobs:
   healthcheck:
     runs-on: ubuntu-20.04
