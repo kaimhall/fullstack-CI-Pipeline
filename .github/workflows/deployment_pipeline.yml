@@ -4,7 +4,7 @@ on:
     branches:
       - development
 jobs:
-  build:
+  lint_and_test:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -32,6 +32,8 @@ jobs:
         run: npm install
       - name: lint
         run: npm run lint
+      - name: build
+        run: npm run build:ui
       - name: test backend
         run: npm run test
       - name: test frontend
